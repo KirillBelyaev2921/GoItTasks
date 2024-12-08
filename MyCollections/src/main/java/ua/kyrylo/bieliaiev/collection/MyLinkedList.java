@@ -2,8 +2,8 @@ package ua.kyrylo.bieliaiev.collection;
 
 public class MyLinkedList<T> implements MyList<T> {
 
-  private Node<T> dummyHead;
-  private Node<T> dummyTail;
+  private final Node<T> dummyHead;
+  private final Node<T> dummyTail;
   private int size;
 
   public MyLinkedList() {

@@ -51,6 +51,7 @@ public class MyArrayList<T> implements MyList<T> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public T get(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
