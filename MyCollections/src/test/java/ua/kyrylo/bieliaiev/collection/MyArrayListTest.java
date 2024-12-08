@@ -9,7 +9,7 @@ class MyArrayListTest {
 
   @Test
   void addAndGet() {
-    MyArrayList<Integer> list = new MyArrayList<>();
+    MyList<Integer> list = new MyArrayList<>();
 
     list.add(1);
     list.add(2);
@@ -23,7 +23,7 @@ class MyArrayListTest {
 
   @Test
   void remove() {
-    MyArrayList<String> list = new MyArrayList<>();
+    MyList<String> list = new MyArrayList<>();
     list.add("Hello");
     list.add("World");
 
@@ -35,7 +35,7 @@ class MyArrayListTest {
 
   @Test
   void clear() {
-    MyArrayList<Object> list = new MyArrayList<>();
+    MyList<Object> list = new MyArrayList<>();
     list.add("Hello");
     list.add("World");
     list.add(1);
@@ -47,7 +47,7 @@ class MyArrayListTest {
 
   @Test
   void size() {
-    MyArrayList<Point> list = new MyArrayList<>();
+    MyList<Point> list = new MyArrayList<>();
     list.add(new Point(0, 0));
     list.add(new Point(50, 50));
 
