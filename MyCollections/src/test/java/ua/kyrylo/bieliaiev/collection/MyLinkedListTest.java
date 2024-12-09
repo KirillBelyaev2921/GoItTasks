@@ -3,6 +3,7 @@ package ua.kyrylo.bieliaiev.collection;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
+import java.util.stream.LongStream;
 import org.junit.jupiter.api.Test;
 
 class MyLinkedListTest {
@@ -54,5 +55,34 @@ class MyLinkedListTest {
     int size = list.size();
 
     assertEquals(2, size);
+  }
+
+  @Test
+  void testAll() {
+    MyList<Long> list = new MyLinkedList<>();
+
+    LongStream.range(0, 10)
+        .forEach(list::add);
+
+    assertEquals(10, list.size());
+
+    list.remove(0);
+
+    assertEquals(9, list.size());
+    assertEquals(1L, list.get(0));
+
+    list.remove(5);
+
+    assertEquals(8, list.size());
+    assertEquals(7L, list.get(5));
+
+    list.clear();
+
+    assertEquals(0, list.size());
+
+    list.add(123L);
+
+    assertEquals(1, list.size());
+    assertEquals(123L, list.get(0));
   }
 }
