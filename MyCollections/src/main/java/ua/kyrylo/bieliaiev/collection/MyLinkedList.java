@@ -1,5 +1,7 @@
 package ua.kyrylo.bieliaiev.collection;
 
+import java.util.NoSuchElementException;
+
 public class MyLinkedList<T> implements MyList<T> {
 
   private final Node<T> dummyHead;
@@ -42,6 +44,26 @@ public class MyLinkedList<T> implements MyList<T> {
     return getNode(index).getValue();
   }
 
+  public T getFirst() {
+    return getFirstNode().getValue();
+  }
+
+  public T getLast() {
+    return getLastNode().getValue();
+  }
+
+  public T removeFirst() {
+    Node<T> node = getFirstNode();
+    remove(node);
+    return node.getValue();
+  }
+
+  public T removeLast() {
+    Node<T> node = getLastNode();
+    remove(node);
+    return node.getValue();
+  }
+
   private Node<T> getNode(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
@@ -51,6 +73,25 @@ public class MyLinkedList<T> implements MyList<T> {
       node = node.getNext();
     }
     return node;
+  }
+
+  private Node<T> getFirstNode() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    return dummyHead.getNext();
+  }
+
+  private Node<T> getLastNode() {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    return dummyTail.getPrev();
+  }
+
+  private void remove(Node<T> node) {
+    Node.connectTwoNodes(node.getPrev(), node.getNext());
+    size--;
   }
 
 }

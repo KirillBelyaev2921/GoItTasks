@@ -1,49 +1,40 @@
 package ua.kyrylo.bieliaiev.collection;
 
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
 public class MyQueue<T> {
 
-
-  private final Node<T> dummyHead;
-  private final Node<T> dummyTail;
-  private int size;
+  private final MyLinkedList<T> queue = new MyLinkedList<>();
 
   public MyQueue() {
-    dummyHead = new Node<>(null);
-    dummyTail = new Node<>(null);
-    size = 0;
-    Node.connectTwoNodes(dummyHead, dummyTail);
   }
 
   public void add(T item) {
-    Node.connectThreeNodes(dummyTail.getPrev(), new Node<>(item), dummyTail);
-    size++;
+    queue.add(item);
   }
 
   public void clear() {
-    Node.connectTwoNodes(dummyHead, dummyTail);
-    size = 0;
+    queue.clear();
   }
 
   public int size() {
-    return size;
+    return queue.size();
   }
 
   public T peek() {
-    if (size == 0) {
-      return null;
+    if (size() == 0) {
+      throw new NoSuchElementException();
     } else {
-      return dummyHead.getNext().getValue();
+      return queue.getFirst();
     }
   }
 
   public T poll() {
-    if (size == 0) {
-      return null;
+    if (size() == 0) {
+      throw new NoSuchElementException();
     } else {
-      Node<T> node = dummyHead.getNext();
-      Node.connectTwoNodes(dummyHead, dummyHead.getNext().getNext());
-      size--;
-      return node.getValue();
+      return queue.removeFirst();
     }
   }
 
