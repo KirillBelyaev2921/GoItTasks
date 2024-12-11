@@ -12,6 +12,7 @@
   <modules>
     <module>ShapeHierarchy</module>
     <module>MyCollections</module>
+    <module>IOTasks</module>
   </modules>
 
   <dependencies>
