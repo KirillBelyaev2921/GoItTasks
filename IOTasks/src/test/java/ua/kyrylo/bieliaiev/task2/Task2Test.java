@@ -13,8 +13,8 @@ class Task2Test {
   @Test
   void txtUserToJson() {
     Task2 task2 = new Task2();
-    try (BufferedReader in = new BufferedReader(new FileReader("files/file2_1_in.txt"));
-        BufferedWriter out = new BufferedWriter(new FileWriter("files/file2_1_out.txt"))) {
+    try (BufferedReader in = new BufferedReader(new FileReader("files/file2.txt"));
+        BufferedWriter out = new BufferedWriter(new FileWriter("files/user.json"))) {
       task2.transformUserDataToJson(in, out);
     } catch (FileNotFoundException e) {
       System.out.println("File not found");
