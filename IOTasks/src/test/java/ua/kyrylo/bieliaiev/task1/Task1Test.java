@@ -14,7 +14,7 @@ class Task1Test {
   void printValidNumbers() {
     Task1 task1 = new Task1();
     try {
-      task1.printValidNumbers(new File("files/file.txt"), System.out);
+      task1.printValidNumbers(new File("files/file1.txt"), System.out);
     } catch (FileNotFoundException e) {
       System.out.println("File not found");
     } catch (IOException e) {
