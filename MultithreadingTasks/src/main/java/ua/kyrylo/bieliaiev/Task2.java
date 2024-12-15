@@ -1,13 +1,11 @@
 package ua.kyrylo.bieliaiev;
 
-import java.util.Queue;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Function;
-import java.util.function.IntPredicate;
+import java.util.function.IntConsumer;
 
 public class Task2 {
 
@@ -16,19 +14,14 @@ public class Task2 {
 
   public void multithreadingFizzBuzz(int n) {
     ExecutorService exec = Executors.newCachedThreadPool();
-    exec.execute(
-        new FizzBuzzRunner(n, i -> i % 3 != 0 && i % 5 != 0, i -> "" + i, queue, barrier));
-    exec.execute(
-        new FizzBuzzRunner(n, i -> i % 3 == 0 && i % 5 != 0, i -> "fizz", queue, barrier));
-    exec.execute(
-        new FizzBuzzRunner(n, i -> i % 3 != 0 && i % 5 == 0, i -> "buzz", queue, barrier));
-    exec.execute(
-        new FizzBuzzRunner(n, i -> i % 3 == 0 && i % 5 == 0, i -> "fizzbuzz", queue, barrier));
+    exec.execute(new FizzBuzzRunner(n, this::noFizzbuzz, barrier));
+    exec.execute(new FizzBuzzRunner(n, this::fizz, barrier));
+    exec.execute(new FizzBuzzRunner(n, this::buzz, barrier));
+    exec.execute(new FizzBuzzRunner(n, this::fizzbuzz, barrier));
     exec.execute(() -> {
       int i = 0;
       while (i < n) {
-        if (!queue.isEmpty()) {
-          System.out.println(queue.poll());
+        if (number()) {
           i++;
         }
       }
@@ -36,36 +29,57 @@ public class Task2 {
 
     exec.shutdown();
 
+  }
 
+  private void noFizzbuzz(int i) {
+    if (i % 3 != 0 && i % 5 != 0) {
+      queue.add("" + i);
+    }
+  }
+
+  private void fizz(int i) {
+    if (i % 3 == 0 && i % 5 != 0) {
+      queue.add("fizz");
+    }
+  }
+  private void buzz(int i) {
+    if (i % 3 != 0 && i % 5 == 0) {
+      queue.add("buzz");
+    }
+  }
+  private void fizzbuzz(int i) {
+    if (i % 3 == 0 && i % 5 == 0) {
+      queue.add("fizzbuzz");
+    }
+  }
+  private boolean number() {
+    if (!queue.isEmpty()) {
+      System.out.println(queue.poll());
+      return true;
+    }
+    return false;
   }
 
   public static void main(String[] args) {
-    new Task2().multithreadingFizzBuzz(15);
+    new Task2().multithreadingFizzBuzz(150);
   }
 
   private static class FizzBuzzRunner implements Runnable {
 
     private final int n;
-    private final IntPredicate predicate;
-    private final Function<Integer, String> function;
-    private final Queue<String> queue;
+    private final IntConsumer consumer;
     private final CyclicBarrier barrier;
 
-    public FizzBuzzRunner(int n, IntPredicate predicate, Function<Integer, String> function,
-        Queue<String> queue, CyclicBarrier barrier) {
+    public FizzBuzzRunner(int n, IntConsumer consumer, CyclicBarrier barrier) {
       this.n = n;
-      this.predicate = predicate;
-      this.function = function;
-      this.queue = queue;
+      this.consumer = consumer;
       this.barrier = barrier;
     }
 
     @Override
     public void run() {
       for (int i = 1; i <= n; i++) {
-        if (predicate.test(i)) {
-          queue.add(function.apply(i));
-        }
+        consumer.accept(i);
         try {
           barrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
