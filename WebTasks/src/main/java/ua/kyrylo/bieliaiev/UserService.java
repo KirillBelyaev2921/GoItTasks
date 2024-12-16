@@ -3,6 +3,7 @@ package ua.kyrylo.bieliaiev;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -62,6 +63,51 @@ public class UserService {
 
       try (CloseableHttpResponse response = httpClient.execute(request)) {
         return response.getCode();
+      }
+    }
+  }
+
+  public String getUsers() throws IOException, ParseException {
+
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet request = new HttpGet(url + "/users");
+
+      try (CloseableHttpResponse response = httpClient.execute(request)) {
+        if (response.getEntity() != null) {
+          return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+        } else {
+          throw new IOException("Empty response from server");
+        }
+      }
+    }
+  }
+
+  public String getUserById(int id) throws IOException, ParseException {
+
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet request = new HttpGet(url + "/users/" + id);
+
+      try (CloseableHttpResponse response = httpClient.execute(request)) {
+        if (response.getEntity() != null) {
+          return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+        } else {
+          throw new IOException("Empty response from server");
+        }
+      }
+    }
+  }
+
+  public String getUserByUserName(String username) throws IOException, ParseException {
+
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet request = new HttpGet(url + "/users?username=" + username);
+
+      try (CloseableHttpResponse response = httpClient.execute(request)) {
+        if (response.getEntity() != null) {
+          return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+        } else {
+          throw new IOException("Empty response from server");
+        }
       }
     }
   }

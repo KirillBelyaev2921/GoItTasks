@@ -1,6 +1,7 @@
 package ua.kyrylo.bieliaiev;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,5 +56,47 @@ class UserServiceTest {
     int codeResponse = userService.deleteUser(1);
 
     assertEquals(2, codeResponse / 100);
+  }
+
+  @Test
+  void getUsers() throws IOException, ParseException {
+    String users = userService.getUsers();
+    System.out.println(users);
+
+    assertTrue(users.contains("\"id\": 1"));
+    assertTrue(users.contains("\"id\": 10"));
+    assertTrue(users.contains("\"website\": \"jacynthe.com\""));
+  }
+
+  @Test
+  void getUserById() throws IOException, ParseException {
+    String user = userService.getUserById(1);
+    System.out.println(user);
+
+    assertTrue(user.contains("\"id\": 1"));
+    assertFalse(user.contains("\"id\": 10"));
+  }
+
+  @Test
+  void getUserByIdNoPresent() throws IOException, ParseException {
+    String user = userService.getUserById(11);
+
+    assertEquals("{}", user);
+  }
+
+  @Test
+  void getUserByUserName() throws IOException, ParseException {
+    String user = userService.getUserByUserName("Bret");
+    System.out.println(user);
+
+    assertTrue(user.contains("\"id\": 1"));
+    assertTrue(user.contains("\"username\": \"Bret\""));
+  }
+
+  @Test
+  void getUserByUserNameNoPresent() throws IOException, ParseException {
+    String user = userService.getUserByUserName("Bret2");
+
+    assertEquals("[]", user);
   }
 }
