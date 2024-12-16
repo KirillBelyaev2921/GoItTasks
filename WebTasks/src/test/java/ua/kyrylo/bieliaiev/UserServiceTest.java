@@ -109,4 +109,9 @@ class UserServiceTest {
   void saveLastPostCommentsToFile2() throws IOException, ParseException {
     userService.saveLastPostCommentsToFile(2);
   }
+
+  @Test
+  void printOpenTasksForUser() throws IOException, ParseException {
+    userService.printOpenTasksForUser(1);
+  }
 }

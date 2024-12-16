@@ -122,9 +122,26 @@ public class UserService {
 
       String content = getPostComments(maxPostId, httpClient);
 
+      System.out.println(content);
+
       writeContentToFile(userId, maxPostId, content);
     }
 
+  }
+
+  public void printOpenTasksForUser(int userId) throws IOException, ParseException {
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      HttpGet request = new HttpGet(url + "/users/" + userId + "/todos?completed=false");
+
+      try (CloseableHttpResponse response = httpClient.execute(request)) {
+        if (response.getEntity() != null) {
+          System.out.println(
+              EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8));
+        } else {
+          throw new IOException("Empty response from server");
+        }
+      }
+    }
   }
 
   private int getMaxPost(CloseableHttpClient httpClient, int userId)
