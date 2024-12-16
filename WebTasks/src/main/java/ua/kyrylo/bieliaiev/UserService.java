@@ -1,7 +1,10 @@
 package ua.kyrylo.bieliaiev;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -16,7 +19,8 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 
 public class UserService {
 
-  String url = "https://jsonplaceholder.typicode.com";
+  private static final String url = "https://jsonplaceholder.typicode.com";
+  private static final Pattern ids = Pattern.compile("\"id\": (\\d+)");
 
   public String addUser(User user) throws IOException, ParseException {
 
@@ -109,6 +113,58 @@ public class UserService {
           throw new IOException("Empty response from server");
         }
       }
+    }
+  }
+
+  public void saveLastPostCommentsToFile(int userId) throws IOException, ParseException {
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+      int maxPostId = getMaxPost(httpClient, userId);
+
+      String content = getPostComments(maxPostId, httpClient);
+
+      writeContentToFile(userId, maxPostId, content);
+    }
+
+  }
+
+  private int getMaxPost(CloseableHttpClient httpClient, int userId)
+      throws IOException, ParseException {
+
+    HttpGet request = new HttpGet(url + "/users/" + userId + "/posts");
+    try (CloseableHttpResponse response = httpClient.execute(request)) {
+      if (response.getEntity() != null) {
+        String content = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+        return  ids.matcher(content)
+            .results()
+            .map(matchResult -> matchResult.group(1))
+            .mapToInt(Integer::parseInt)
+            .max()
+            .orElseThrow();
+      } else {
+        throw new IOException("Empty response from server");
+      }
+    }
+  }
+
+  private String getPostComments(int maxPost, CloseableHttpClient httpClient)
+      throws IOException, ParseException {
+
+    HttpGet request = new HttpGet(url + "/posts/" + maxPost + "/comments");
+    try (CloseableHttpResponse response = httpClient.execute(request)) {
+      if (response.getEntity() != null) {
+        return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+      } else {
+        throw new IOException("Empty response from server");
+      }
+    }
+  }
+
+  private void writeContentToFile(int userId, int postId, String content) throws IOException {
+
+    try (BufferedWriter out = new BufferedWriter(
+        new FileWriter("files/user-%d-post-%d-comments.json".formatted(userId, postId)))) {
+
+      out.write(content);
     }
   }
 

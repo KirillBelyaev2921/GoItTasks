@@ -99,4 +99,14 @@ class UserServiceTest {
 
     assertEquals("[]", user);
   }
+
+  @Test
+  void saveLastPostCommentsToFile() throws IOException, ParseException {
+    userService.saveLastPostCommentsToFile(1);
+  }
+
+  @Test
+  void saveLastPostCommentsToFile2() throws IOException, ParseException {
+    userService.saveLastPostCommentsToFile(2);
+  }
 }
