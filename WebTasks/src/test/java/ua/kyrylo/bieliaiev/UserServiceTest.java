@@ -1,5 +1,6 @@
 package ua.kyrylo.bieliaiev;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,5 +48,12 @@ class UserServiceTest {
     assertNotNull(response);
     assertTrue(response.contains("\"id\": 1"));
     assertTrue(response.contains("\"email\": \"123@gmail.com\""));
+  }
+
+  @Test
+  void deleteUser() throws IOException, ParseException {
+    int codeResponse = userService.deleteUser(1);
+
+    assertEquals(2, codeResponse / 100);
   }
 }
