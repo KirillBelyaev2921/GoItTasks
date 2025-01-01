@@ -16,6 +16,7 @@
     <module>LambdaTasks</module>
     <module>MultithreadingTasks</module>
     <module>WebTasks</module>
+      <module>ComplexityTask</module>
   </modules>
 
   <dependencies>
