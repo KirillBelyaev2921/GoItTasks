@@ -11,8 +11,8 @@ public class Database {
     private final Connection connection;
 
     private Database() throws SQLException {
-        String url = "jdbc:h2:mem:test";
-        connection = DriverManager.getConnection(url);
+        String url = "jdbc:h2:~/test";
+        connection = DriverManager.getConnection(url, "sa", "");
     }
 
     public static Database getInstance() throws SQLException {
