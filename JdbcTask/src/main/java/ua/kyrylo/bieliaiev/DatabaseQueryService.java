@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,27 @@ public class DatabaseQueryService {
         String sqlFilePath = "sql/find_max_projects_client.sql";
         return executeCommand(sqlFilePath, resultSet -> {
             String name = resultSet.getString("name");
-            int salary = resultSet.getInt("project_count");
-            return new MaxProjectsClient(name, salary);
+            int projectCount = resultSet.getInt("project_count");
+            return new MaxProjectsClient(name, projectCount);
+        });
+    }
+
+    public List<LongestProject> findLongestProject() {
+        String sqlFilePath = "sql/find_longest_project.sql";
+        return executeCommand(sqlFilePath, resultSet -> {
+            int projectId = resultSet.getInt("id");
+            int months = resultSet.getInt("month_count");
+            return new LongestProject(projectId, months);
+        });
+    }
+
+    public List<YoungestEldestWorkers> findYoungestEldestWorkers() {
+        String sqlFilePath = "sql/find_youngest_eldest_workers.sql";
+        return executeCommand(sqlFilePath, resultSet -> {
+            String type = resultSet.getString("type");
+            String name = resultSet.getString("name");
+            LocalDate birthday = resultSet.getObject("birthday", LocalDate.class);
+            return new YoungestEldestWorkers(type, name, birthday);
         });
     }
 
