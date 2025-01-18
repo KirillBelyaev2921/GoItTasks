@@ -50,6 +50,15 @@ public class DatabaseQueryService {
         });
     }
 
+    public List<ProjectPrices> printProjectPrices() {
+        String sqlFilePath = "sql/print_project_prices.sql";
+        return executeCommand(sqlFilePath, resultSet -> {
+            int projectId = resultSet.getInt("id");
+            double price = resultSet.getDouble("price");
+            return new ProjectPrices(projectId, price);
+        });
+    }
+
     private <R> List<R> executeCommand(String path, SqlFunction<ResultSet, R> function) {
         List<R> resultList = new ArrayList<>();
 
