@@ -21,6 +21,15 @@ public class DatabaseQueryService {
         });
     }
 
+    public List<MaxProjectsClient> findMaxProjectsClient() {
+        String sqlFilePath = "sql/find_max_projects_client.sql";
+        return executeCommand(sqlFilePath, resultSet -> {
+            String name = resultSet.getString("name");
+            int salary = resultSet.getInt("project_count");
+            return new MaxProjectsClient(name, salary);
+        });
+    }
+
     private <R> List<R> executeCommand(String path, SqlFunction<ResultSet, R> function) {
         List<R> resultList = new ArrayList<>();
 
