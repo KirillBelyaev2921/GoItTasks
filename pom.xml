@@ -17,6 +17,7 @@
     <module>MultithreadingTasks</module>
     <module>WebTasks</module>
       <module>ComplexityTask</module>
+      <module>JdbcExtendedTask</module>
   </modules>
 
   <dependencies>
