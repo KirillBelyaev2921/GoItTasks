@@ -18,6 +18,7 @@
     <module>WebTasks</module>
       <module>ComplexityTask</module>
       <module>JdbcExtendedTask</module>
+      <module>CrudTask</module>
   </modules>
 
   <dependencies>
