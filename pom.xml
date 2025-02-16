@@ -19,6 +19,7 @@
       <module>ComplexityTask</module>
       <module>JdbcExtendedTask</module>
       <module>CrudTask</module>
+    <module>HttpTask</module>
   </modules>
 
   <dependencies>
