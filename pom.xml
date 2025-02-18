@@ -20,6 +20,7 @@
       <module>JdbcExtendedTask</module>
       <module>CrudTask</module>
     <module>HttpTask</module>
+    <module>ServletTask</module>
   </modules>
 
   <dependencies>
