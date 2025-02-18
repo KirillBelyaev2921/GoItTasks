@@ -8,22 +8,20 @@ import java.net.http.HttpResponse;
 
 public class HttpStatusChecker {
 
-    public String getStatusImage(int code) {
+    private final HttpClient client = HttpClient.newHttpClient();
+
+    public String getStatusImage(int code) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://http.cat/" + code + ".jpg"))
                 .GET()
                 .build();
 
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                return request.uri().toString();
-            } else {
-                throw new IllegalArgumentException("Cat with code " + code + " is not found");
-            }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        HttpResponse<String> response = client.send(request,
+                HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            return request.uri().toString();
+        } else {
+            throw new IllegalArgumentException("Cat with code " + code + " is not found");
         }
     }
 }

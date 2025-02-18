@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HttpStatusCheckerTest {
 
     @Test
-    void getStatusImage() {
+    void getStatusImage() throws Exception {
         HttpStatusChecker checker = new HttpStatusChecker();
 
         String statusImage = checker.getStatusImage(200);
@@ -22,7 +22,7 @@ class HttpStatusCheckerTest {
     }
 
     @Test
-    void getStatusImageWhen404() {
+    void getStatusImageWhen404() throws Exception {
         HttpStatusChecker checker = new HttpStatusChecker();
 
         String statusImage = checker.getStatusImage(404);

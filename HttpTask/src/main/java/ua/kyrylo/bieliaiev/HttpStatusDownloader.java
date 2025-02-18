@@ -6,6 +6,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 public class HttpStatusDownloader {
 
     private final String downloadFolderUrl;
@@ -14,13 +16,11 @@ public class HttpStatusDownloader {
         this.downloadFolderUrl = downloadFolderUrl;
     }
 
-    public void downloadStatusImage(int code) {
+    public void downloadStatusImage(int code) throws IOException, InterruptedException {
         URI uri = URI.create(new HttpStatusChecker().getStatusImage(code));
 
         try (InputStream in = uri.toURL().openStream()) {
-            Files.copy(in, Paths.get(downloadFolderUrl + code + ".jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
+            Files.copy(in, Paths.get(downloadFolderUrl + code + ".jpg"), REPLACE_EXISTING);
         }
     }
 }
