@@ -1,6 +1,5 @@
 package ua.kyrylo.bieliaiev;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,7 @@ public class TimeServlet extends HttpServlet {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss OOOO");
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int offset = (Integer) req.getAttribute("offset");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneOffset.ofHours(offset));
