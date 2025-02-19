@@ -12,8 +12,6 @@ import java.io.IOException;
 @WebFilter(value = "/time")
 public class TimezoneValidateFilter extends HttpFilter {
 
-    private final TimezoneFormatter formatter = new TimezoneFormatter();
-
     @Override
     public void doFilter(HttpServletRequest req,
                          HttpServletResponse res,
@@ -22,11 +20,11 @@ public class TimezoneValidateFilter extends HttpFilter {
 
         String timezone = req.getParameter("timezone");
         try {
-            int offset = formatter.getTimezoneOffset(timezone);
+            int offset = TimezoneFormatter.getTimezoneOffset(timezone);
             req.setAttribute("offset", offset);
             chain.doFilter(req, res);
-        } catch (Exception e) {
-            res.setStatus(400);
+        } catch (IllegalArgumentException e) {
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write("Invalid timezone: " + timezone);
             res.getWriter().close();
         }

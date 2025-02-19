@@ -5,12 +5,15 @@ import java.util.regex.Pattern;
 
 public class TimezoneFormatter {
 
-    private static final Pattern timezonePattern = Pattern.compile("UTC[ +]?(-?\\d+)");
+    private static final Pattern TIMEZONE_PATTERN = Pattern.compile("UTC[ +]?(-?\\d+)");
 
-    public int getTimezoneOffset(String timezone) {
+    private TimezoneFormatter() {
+    }
+
+    public static int getTimezoneOffset(String timezone) {
         int offset = 0;
         if (timezone != null) {
-            Matcher matcher = timezonePattern.matcher(timezone);
+            Matcher matcher = TIMEZONE_PATTERN.matcher(timezone);
             if (matcher.find()) {
                 try {
                     offset = Integer.parseInt(matcher.group(1));
