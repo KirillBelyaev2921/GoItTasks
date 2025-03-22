@@ -20,8 +20,7 @@ public class TimezoneValidateFilter extends HttpFilter {
 
         String timezone = req.getParameter("timezone");
         try {
-            int offset = TimezoneFormatter.getTimezoneOffset(timezone);
-            req.setAttribute("offset", offset);
+            TimezoneFormatter.getTimezoneOffset(timezone);
             chain.doFilter(req, res);
         } catch (IllegalArgumentException e) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -29,4 +28,5 @@ public class TimezoneValidateFilter extends HttpFilter {
             res.getWriter().close();
         }
     }
+
 }
